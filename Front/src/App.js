@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import Home from './component/Home'
 import Login from './component/Login';
 
-import './css/login.css'
+//import './css/login.css'
 
 
 // const initlog=false;
@@ -36,6 +36,7 @@ export default class App extends Component {
 
     return (
       <div className="back">
+
         {app}
         {/* <Home/> */}
         {/* <Login/> */}

@@ -1,169 +1,157 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import { login } from '../service/serviceLogin';
 
-import {
-  MDBContainer,
-  MDBRow,
-  MDBCol,
-  MDBCard,
-  MDBCardBody,
-  MDBModalFooter,
-  MDBIcon,
-  MDBCardHeader,
-  MDBBtn,
-  MDBInput
-} from "mdbreact";
-import '@fortawesome/fontawesome-free/css/all.min.css';
-import 'bootstrap-css-only/css/bootstrap.min.css';
-import 'mdbreact/dist/css/mdb.css';
-
-import '../css/login.css'
-
-const initState={
-  email:'',
-  password: '',
-  emailEror: '',
-  passwordEror: ''
-}
-
 export default class Login extends Component {
-  
   constructor(props) {
     super(props);
 
-    this.state = initState;
-    this.onChangeEmail = this.onChangeEmail.bind(this)
-    this.onChangePassword = this.onChangePassword.bind(this)
+    this.state = {
+      email: '',
+      password: '',
+      emailError: '',
+      passwordError: ''
+    };
 
-    this.onSubmit = this.onSubmit.bind(this)
-}  
+    this.onChangeEmail = this.onChangeEmail.bind(this);
+    this.onChangePassword = this.onChangePassword.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+  }
 
-onChangeEmail(e) {
-  this.setState({
+  onChangeEmail(e) {
+    this.setState({
       email: e.target.value
-  });
-}
-onChangePassword(e) {
-  this.setState({
+    });
+  }
+
+  onChangePassword(e) {
+    this.setState({
       password: e.target.value
-  });
-}
+    });
+  }
 
- Valider(){
-   let emailEror="";
-   let passwordEror = "";
+  validateForm() {
+    let emailError = '';
+    let passwordError = '';
 
- 
-      if(!this.state.email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i)){
-          emailEror="l'email est non validé, il faut avoire la forme suivante : *****@****.***";
-      }
-      if(!this.state.password.match(/^([\w.%+-]+)/i)){
-        passwordEror="le champ mot de passe est obligatiore"
-      }
-      if(emailEror||passwordEror){
-        this.setState({emailEror,passwordEror});
-        return false;
+    if (!this.state.email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i)) {
+      emailError = "The email is invalid. Please enter a valid email address.";
+    }
+    if (!this.state.password) {
+      passwordError = "The password field is required.";
+    }
+    if (emailError || passwordError) {
+      this.setState({ emailError, passwordError });
+      return false;
     }
 
     return true;
- }
-onSubmit(e) {
-  e.preventDefault()
-  
-  const user = {
-    email: this.state.email,
-    password: this.state.password
   }
-    console.log(user)
-    const isValid=this.Valider();  
-    if(!!isValid){
+
+  onSubmit(e) {
+    e.preventDefault();
+    console.log(e)
+    const user = {
+      email: this.state.email,
+      password: this.state.password
+    };
+
+    const isValid = this.validateForm();
+    if (isValid) {
       login(user).then(res => {
         if (res) {
-          console.log('------------------------>******',res)
           localStorage.setItem('loggedIn', true);
-          console.log('ress-------',res)
           this.props.signIn(res);
-          console.log("vous avez connecter", res.user)
-      
+          console.log("You have successfully logged in:", res.user);
         }
-      })     
-    }else{
-        console.log("il a un probleme dans la validation des informations")
-        alert("il a un probleme dans la validation des informations")
+      });
+    } else {
+      console.log("There is a problem with the validation of the information.");
+      alert("There is a problem with the validation of the information.");
     }
- 
-}
-    render() {
-     
-        return (
-          
-            <div className="outer-div" > 
-             
-              <MDBContainer className="inner-div">
-                <MDBRow>
-                  <MDBCol className="text-center">
-                    <MDBCard >
-                      <MDBCardBody>
-                        <MDBCardHeader className="form-header deep-blue-gradient ">
-                          <h3 className="my-3">
-                            <MDBIcon icon="lock" /> S'identifier:
-                          </h3>
-                        </MDBCardHeader>
-                        <form>
-                          <div className="grey-text">
-                            <MDBInput
-                              label="Adresse email"
-                              group
-                              type="email"
-                              validate
-                              success="right"
-                              value={this.state.email}
-                              onChange={this.onChangeEmail}
-                              
-                            />
-                             <div style={{color:"red"}}>{this.state.emailEror}</div>
-                            <MDBInput
-                              label="Mot de passe"
-                              group
-                              type="password"
-                              validate
-                              value={this.state.password}
-                              onChange={this.onChangePassword}
-                             
-                            />
-                             <div style={{color:"red"}}>{this.state.passwordEror}</div>
-                          </div>
+  }
 
-                        <div className="text-center mt-4">
-                          <MDBBtn
-                            color="blue"
-                            className="mb-3"
-                            type="submit"
-                            
-                            onClick={this.onSubmit}
-                          >
-                            Ce connecter
-                          </MDBBtn>
-                        </div>
-                        </form>
-                        <MDBModalFooter>
-                                {'Copyright © '}
-                                <a href="http://www.este.ucam.ac.ma">
-                                    EST Essouira</a> 2019-2020
-                        </MDBModalFooter>
-                      </MDBCardBody>
-                    </MDBCard>
-                  </MDBCol>
-                </MDBRow>
-              </MDBContainer>
-          
+  render() {
+    return (
+      <>
+        <div className="flex min-h-screen">
+          <div className="flex flex-col justify-center flex-1 px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
+            <div className="mx-auto w-full max-w-sm lg:w-96">
+              <div>
+                <img
+                  className="h-10 w-auto"
+                  src="./assets/img/logo.png"
+                  alt="absencepro"
+                />
+                <h2 className="mt-8 text-2xl font-bold leading-9 tracking-tight text-gray-900">
+                Connectez-vous à votre compte
+                </h2>
+              </div>
+
+              <div className="mt-10">
+                <div>
+                  <form onSubmit={this.onSubmit} className="space-y-6">
+                    <div>
+                      <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+                        Email address
+                      </label>
+                      <div className="mt-2">
+                        <input
+                          id="email"
+                          name="email"
+                          type="email"
+                          autoComplete="email"
+                          required
+                          value={this.state.email}
+                          onChange={this.onChangeEmail}
+                          className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        />
+                      </div>
+                      <div style={{ color: "red" }}>{this.state.emailError}</div>
+                    </div>
+
+                    <div>
+                      <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
+                        Password
+                      </label>
+                      <div className="mt-2">
+                        <input
+                          id="password"
+                          name="password"
+                          type="password"
+                          autoComplete="current-password"
+                          required
+                          value={this.state.password}
+                          onChange={this.onChangePassword}
+                          className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        />
+                      </div>
+                      <div style={{ color: "red" }}>{this.state.passwordError}</div>
+                    </div>
+
+                    <div>
+                      <button
+                        type="submit"
+                        className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                      >
+                        S'identifier
+                      </button>
+                    </div>
+                  </form>
+                </div>
+
+
+              </div>
+            </div>
           </div>
-          
-          
-  
-        )
-      
-    }
-    
+          <div className="relative w-0 flex-1 lg:block">
+            <img
+              className="absolute inset-0 h-full w-full object-cover"
+              src="https://images.unsplash.com/photo-1496917756835-20cb06e75b4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1908&q=80"
+              alt=""
+            />
+          </div>
+        </div>
+      </>
+    );
+  }
 }
-
