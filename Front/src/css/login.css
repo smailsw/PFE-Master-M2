@@ -1,0 +1,14 @@
+.outer-div {
+    padding: 50px;
+    width: 600px;
+    height: 600px;
+    margin-left: 455px;
+    position: fixed;
+   
+
+}
+.inner-div {
+    margin: auto;
+    
+     
+}

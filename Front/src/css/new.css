@@ -1,0 +1,37 @@
+
+.dk{
+    font-family: 'Libre Baskerville', serif;
+    display:block;
+    font-size:22px;
+    color: rgb(10, 10, 10);
+     }
+  
+     /* .dk{
+        color: rgb(28, 79, 230);
+        font-family: 'Libre Baskerville', serif;
+        display:block;
+        font-size:20px;
+        
+     } */
+     .nk{
+        color: rgb(52, 144, 26);
+        font-size:20px;
+     }
+     .col-md-6{
+         padding: 0%;
+         margin-bottom: 50px;
+         
+     }
+     .notif{
+         
+         padding: 0%;
+         float: right;
+     }
+.rounded{
+    width: 190px;
+    height: 190px;
+}
+.hidden { 
+    display:none !important;
+   
+   }

@@ -1,0 +1,10 @@
+Pull Mysql :docker pull mysql
+
+Pull PHPMyAdmin : docker pull phpmyadmin/phpmyadmin
+
+initiat mysql container :docker run --name pfe-test-mysql -e MYSQL_ROOT_PASSWORD=ismail -p 3306:3306 -d mysql
+
+Link PHPMyAdmin to dockerMysql : docker run --name my-phpmyadmin -d --link pfe-test-mysql:db -p 8080:80 phpmyadmin/phpmyadmin
+
+to access mysql :docker exec -it pfe-test-mysql mysql -u root -p
+

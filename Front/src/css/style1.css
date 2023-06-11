@@ -1,0 +1,23 @@
+body, html {
+height: 100%;
+width: 100%;
+}
+.bg {
+background-image: url(".//wp3243951.jpg");
+height: 100vh;
+background-position: center;
+background-repeat: no-repeat;
+background-size: cover;
+}
+.hidden { 
+    display:none !important;
+   
+   }
+   .dd{
+       float: right;
+       color: rgb(12, 12, 238);
+       list-style-type: none;
+
+   }
+
+  
