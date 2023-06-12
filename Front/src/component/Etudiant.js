@@ -88,7 +88,7 @@ export default class Etudiant extends Component {
   render() {
     const etudiant = Array.isArray(this.state.listFilter) && this.state.listFilter.map((etudiant) => {
       return (
-        <tr key={etudiant.id_Etudiant}>
+        <tr key={etudiant.id_Etudiant} className="even:bg-gray-50">
           <td className="px-4 py-3">{etudiant.last_name}</td>
           <td className="px-4 py-3">{etudiant.first_name}</td>
           <td className="px-4 py-3">{etudiant.email}</td>
@@ -98,16 +98,12 @@ export default class Etudiant extends Component {
           <td className="px-4 py-3">{etudiant.date_naissance}</td>
           <td className="px-4 py-3">{etudiant.telephone}</td>
           <td className="px-4 py-3">{this.state.nomFiliere}</td>
-          <td className="px-4 py-3">
-            <button className="btn" onClick={() => this.onClick(etudiant.id_Etudiant)}>
-              <i className="fa fa-pencil-square-o" aria-hidden="true">
-                <img src="https://img.icons8.com/color/30/000000/edit-user-male--v1.png" alt="" />
-              </i>
+          <td className="relative py-3 pl-3 pr-4 sm:pr-3">
+            <button className="text-indigo-600 hover:text-indigo-900 mr-3" onClick={() => this.onClick(etudiant.id_Etudiant)}>
+              Edit<span className="sr-only">, {etudiant.last_name}</span>
             </button>
-            <button className="btn" onClick={() => this.deleteEtudiant(etudiant.id_Etudiant)}>
-              <i className="fa fa-trash-o">
-                <img src="https://img.icons8.com/plasticine/30/000000/filled-trash.png" alt="" />
-              </i>
+            <button className="text-indigo-600 hover:text-indigo-900" onClick={() => this.deleteEtudiant(etudiant.id_Etudiant)}>
+              Delete<span className="sr-only">, {etudiant.last_name}</span>
             </button>
           </td>
         </tr>
@@ -128,18 +124,15 @@ export default class Etudiant extends Component {
               value={this.state.val}
               onChange={this.OnchangeState}
             />
-            <div className="col-sm-1">
-              <button className="btn add-admin-button" onClick={() => this.addEtudiant('/addEtudiant')}>
+            <div className="col-sm-1 mr-2 ml-2">
+              <button className="btn" onClick={() => this.addEtudiant('/addEtudiant')}>
                 <i className="fa fa-trash-o">
                   <img src="https://img.icons8.com/fluent/40/000000/add-user-male.png" alt="" />
                 </i>
               </button>
             </div>
             <div className="col-sm-1">
-              <button
-                className="btn add-liste-admin-button"
-                onClick={() => this.addListeEtudiant('/addListeEtudiant')}
-              >
+              <button className="btn" onClick={() => this.addListeEtudiant('/addListeEtudiant')}>
                 <i className="fa fa-trash-o">
                   <img src="https://img.icons8.com/fluent/40/000000/add-file.png" alt="" />
                 </i>
