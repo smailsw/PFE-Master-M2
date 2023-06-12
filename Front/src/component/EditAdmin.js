@@ -113,7 +113,6 @@ export default class EditAdmin extends Component {
                 last_name: this.state.prenom,
                 email: this.state.email,
                 adresse: this.state.adresse,
-               
             }
             console.log(admin)
            

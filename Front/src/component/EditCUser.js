@@ -115,7 +115,6 @@ export default class EditCUser extends Component {
                         email: res.data.email,
                         password: res.data.password,
                         role: res.data.role
-                       
                     })
                     console.log(res.data )
                 })
