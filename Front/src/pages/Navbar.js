@@ -45,6 +45,7 @@ import { Disclosure, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import HeaderCustom from "./HeaderCustom";
 import SidebarCustom from "./SidebarCustom";
+import LayoutCustom from "./LayoutCustom";
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 //import './NavBar.css'
@@ -88,15 +89,14 @@ export default class NavBar extends Component {
   render() {
     return (
       <>
+{/* <SidebarCustom role={this.state.role}/> */}
 
-      <HeaderCustom signout={this.props.signout} userID={this.state.id} />
+      {/* <HeaderCustom signout={this.props.signout} userID={this.state.id} /> */}
 
-        <SidebarCustom role={this.state.role}/>
+        
 
-
-        <main className="w-5/6">
-            <div className="px-4 sm:px-6 lg:px-8 my-3">
-            <Switch>
+<LayoutCustom role={this.state.role} signout={this.props.signout} userID={this.state.id}>
+<Switch>
               {/* <Route path="*" exact component={NotFound} />  */}
               <Route path="/admins" exact component={Admin} />
               <Route path="/addAdmin" exact component={addAdmin} />
@@ -150,8 +150,12 @@ export default class NavBar extends Component {
               <Route path="/grafs" exact component={GrafsProf} />
               <Route path="/grafsAdmin" exact component={GrafsAdmin} />
             </Switch>
+</LayoutCustom>
+        {/* <main className="w-5/6">
+            <div className="px-4 sm:px-6 lg:px-8 my-3">
+
             </div>
-          </main>
+          </main> */}
 
       </>
       

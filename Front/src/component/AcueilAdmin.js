@@ -13,12 +13,12 @@ export default class AcueilAdmin extends Component {
     return (
       <div className="container mx-auto">
         <div className="relative">
-          <img className="w-full" src="https://images.unsplash.com/photo-1496917756835-20cb06e75b4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1908&q=80" alt="First slide" />
+          <img className="w-full" src="https://www.itlearning-campus.com/wp-content/uploads/2021/05/main_slide.jpeg" alt="First slide" />
           <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50">
             <div className="flex flex-col items-center justify-center h-full">
-              <h2 className="text-2xl font-bold text-white">Université Cadi Ayyad</h2>
+              <h2 className="text-2xl font-bold text-white">IT Learning Campus</h2>
               <h4 className="text-xl font-bold text-white">
-                École supérieure de technologie d'Essaouira
+              Faculté des Sciences et Techniques de Settat
               </h4>
             </div>
           </div>

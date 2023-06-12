@@ -61,11 +61,12 @@ function classNames(...classes) {
 }
 
 export default function SidebarCustom(props) {
+  console.log("props.role",props.role)
   return (
     <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6 ">
               <div className="flex h-16 shrink-0 items-center">
         <img
-          className="h-8 w-auto"
+          className="ml-2 mt-2 h-10 w-auto"
           src="./assets/img/logo.png"
           alt="Your Company"
         />
