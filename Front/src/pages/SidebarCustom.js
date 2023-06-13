@@ -31,7 +31,7 @@ const navigation = [
     noAccess:["Prof"],
     children: [
       { name: 'Etudiants', to: '/etudiants',restrictTo:["Prof","Etudiant"] },
-      { name: "Compte de l'Etudiant", to: '/etudianrCompte',restrictTo:["Prof","Etudiant"] },
+      { name: "Compte de l'Etudiant", to: '/etudiantCompte',restrictTo:["Prof","Etudiant"] },
 
     ],
   },
@@ -67,7 +67,7 @@ export default function SidebarCustom(props) {
               <div className="flex h-16 shrink-0 items-center">
         <img
           className="ml-2 mt-2 h-10 w-auto"
-          src="./assets/img/logo.png"
+          src="https://i.ibb.co/tD9mnVd/logo.png"
           alt="Your Company"
         />
       </div>

@@ -130,7 +130,7 @@ export default class NavBar extends Component {
               <Route path="/addAbsence/:id" exact component={addAbsence} />
               {/* <Route path="/EditAbsence/:id" exact component={EditAbsence} /> */}
 
-              <Route path="/etudianrCompte" exact component={EtudiantCompte} />
+              <Route path="/etudiantCompte" exact component={EtudiantCompte} />
 
               <Route path="/EditCUser/:id" exact component={EditCUser} />
 

@@ -37,7 +37,7 @@ const navigation = [
     noAccess:["Prof"],
     children: [
       { name: 'Etudiants', to: '/etudiants',restrictTo:["Prof","Etudiant"] },
-      { name: "Compte de l'Etudiant", to: '/etudianrCompte',restrictTo:["Prof","Etudiant"] },
+      { name: "Compte de l'Etudiant", to: '/etudiantCompte',restrictTo:["Prof","Etudiant"] },
 
     ],
   },

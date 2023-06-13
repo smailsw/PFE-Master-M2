@@ -25,7 +25,7 @@ export const login = user => {
                
       }else if(response.data.user.role === 'Etudiant')
       {
-        history.push('/etudianrCompte',response.data.user.role)
+        history.push('/etudiantCompte',response.data.user.role)
       }else if(response.data.user.role === 'Admin')
       {
         history.push('/acueilAdmin',response.data.user.role)
