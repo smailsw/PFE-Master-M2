@@ -1,168 +1,157 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import { addfiliere } from '../service/serviceAddfiliere';
 import history from '../history';
 
+const initialState = {
+  nom_filiere: '',
+  abreviation: '',
+  selectStudents: [],
+  addS: null,
+  nom_filiereEror: '',
+  abreviationEror: ''
+};
 
-
-const initailState ={
-    nom_filiere:'',
-    abreviation:'',
-    listetudiants:[],
-    selectStudents : [] ,
-    addS: null,
-        
-    nom_filiereEror:'',
-    abreviationEror:'',
-    
-}
 export default class addFiliere extends Component {
-    constructor(props) {
-        super(props);
-        this.onChangeNom_filiere = this.onChangeNom_filiere.bind(this);
-        this.onChangeAbreviation = this.onChangeAbreviation.bind(this);
-        this.onChangeSelectStudent = this.onChangeSelectStudent.bind(this);
+  constructor(props) {
+    super(props);
+    this.onChangeNom_filiere = this.onChangeNom_filiere.bind(this);
+    this.onChangeAbreviation = this.onChangeAbreviation.bind(this);
+    this.onChangeSelectStudent = this.onChangeSelectStudent.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+    this.state = initialState;
+  }
 
-       
-            
-        this.onSubmit = this.onSubmit.bind(this);
-
-        this.state=initailState;
-
-
-        }
-        onChangeSelectStudent(e)
- {
+  onChangeSelectStudent(e) {
     this.setState({
-        selectStudents: [...this.state.selectStudents, e.target.value]
-    })
- }        
-        onChangeNom_filiere(e) {
-            this.setState({
-                nom_filiere: e.target.value
-            });
-        }
-        onChangeAbreviation(e) {
-            this.setState({
-                abreviation: e.target.value
-            });
-        }
-        
-        
+      selectStudents: [...this.state.selectStudents, e.target.value]
+    });
+  }
 
-        /*la fonction de validation */
-       
-        validate =()=>{
-            let nom_filiereEror="";
-            let abreviationEror="";
-           
-            if(!this.state.nom_filiere){
-                nom_filiereEror="le champ Nom de filiere est obligatiore"
-            }
-            if(!this.state.abreviation){
-                abreviationEror="le champ abreviation est obligatiore"
-            }
-                       
-            if(nom_filiereEror||abreviationEror){
-                this.setState({nom_filiereEror,abreviationEror});
-                return false;
-            }
+  onChangeNom_filiere(e) {
+    this.setState({
+      nom_filiere: e.target.value
+    });
+  }
 
-            return true;
-            
-        }
-        
+  onChangeAbreviation(e) {
+    this.setState({
+      abreviation: e.target.value
+    });
+  }
 
-        onSubmit(e) {
-            e.preventDefault();
-            console.log('********!!!!!!!!!!**************!!!!!!!!!!!!*');
-            const filiere = {
-                nom_filiere: this.state.nom_filiere,
-                abreviation: this.state.abreviation,
-                selectStudents: this.state.selectStudents
-                              
-            }
+  validate = () => {
+    let nom_filiereEror = '';
+    let abreviationEror = '';
 
-            console.log(filiere)
-           
-
-            const isValid=this.validate();  
-            if(isValid){
-                console.log(filiere);
-                addfiliere(filiere).then(res => {
-                this.setState(initailState)
-                this.setState({
-                    addS: "Filière Ajouteé"
-                })
-                console.log("il est envoyer");
-                 
-                  })
-                
-            }else{
-                console.log("il a un probleme dans la validation des informations")
-            }
-                     
+    if (!this.state.nom_filiere) {
+      nom_filiereEror = 'Le champ Nom de filière est obligatoire';
     }
-    
-    annuler(e){
-        history.push('/filieres');
-        window.location.reload(false); 
+    if (!this.state.abreviation) {
+      abreviationEror = 'Le champ abréviation est obligatoire';
     }
-    
-  
-    render() {
-        return (
-            <div className="db">
-                
-                
-                    <form onSubmit={this.onSubmit}  class="text border border-light p-5">  
-                    <div className={this.state.addS == null  ? 'hidden' : ''} >
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <strong > {this.state.addS}</strong> 
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    </div>
-                    </div> 
-                    <b>Ajouter une filière</b>
-                    <hr/>
-                    <div class="form-group">
-                        <div className="col-md-6">
-                                <label>Nom de filière: </label>
-                                <input type="text"
-                                    required
-                                    placeholder="Nom de filière"
-                                    className="form-control"
-                                    value={this.state.nom_filiere}
-                                    onChange={this.onChangeNom_filiere}
-                                />
-                                <div style={{color:"red"}}>{this.state.nom_filiereEror}</div>
-                            </div>
-                            
-                    </div>
-                    <div class="form-group">
-                    <div className="col-md-6">
-                                <label>Abreviation: </label>
-                                <input type="text"
-                                    required
-                                    placeholder="Abreviation"
-                                    className="form-control"
-                                    value={this.state.abreviation}
-                                    onChange={this.onChangeAbreviation}
-                                />
-                                <div style={{color:"red"}}>{this.state.abreviationEror}</div>
-                            </div>
-                            
-                    </div>
-                 
-                                      
-                    <div className="col-md-12">
-                    <button type="button" class="btn btn-success" onClick={this.onSubmit} >Ajouter</button> 
-                    <button type="button" class="btn btn-danger" onClick={this.annuler} >Annuler</button>   
-                    </div>
-                    </form>
-      
+
+    if (nom_filiereEror || abreviationEror) {
+      this.setState({ nom_filiereEror, abreviationEror });
+      return false;
+    }
+
+    return true;
+  };
+
+  onSubmit(e) {
+    e.preventDefault();
+    const filiere = {
+      nom_filiere: this.state.nom_filiere,
+      abreviation: this.state.abreviation,
+      selectStudents: this.state.selectStudents
+    };
+
+    const isValid = this.validate();
+    if (isValid) {
+      addfiliere(filiere)
+        .then((res) => {
+          this.setState(initialState);
+          this.setState({
+            addS: 'Filière Ajoutée'
+          });
+        })
+        .catch((error) => {
+          console.log("Il y a eu une erreur lors de l'envoi", error);
+        });
+    } else {
+      console.log('Il y a un problème dans la validation des informations');
+    }
+  }
+
+  annuler(e) {
+    history.push('/filieres');
+    window.location.reload(false);
+  }
+
+  render() {
+    return (
+      <div className="db">
+        <form onSubmit={this.onSubmit} className="text border border-light p-5">
+          <div className={this.state.addS == null ? 'hidden' : ''}>
+            <div className="alert alert-success alert-dismissible fade show" role="alert">
+              <strong>{this.state.addS}</strong>
+              <button type="button" className="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          </div>
+          <b>Ajouter une filière</b>
+          <hr className="my-4" />
+          <div className="grid grid-cols-2 gap-6">
+            <div className="col-span-2 sm:col-span-1">
+              <label htmlFor="nom_filiere" className="block text-sm font-medium text-gray-700">
+                Nom de filière:
+              </label>
+              <input
+                type="text"
+                required
+                placeholder="Nom de filière"
+                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                value={this.state.nom_filiere}
+                onChange={this.onChangeNom_filiere}
+              />
+              <div style={{ color: 'red' }}>{this.state.nom_filiereEror}</div>
+            </div>
+            <div className="col-span-2 sm:col-span-1">
+              <label htmlFor="abreviation" className="block text-sm font-medium text-gray-700">
+                Abreviation:
+              </label>
+              <input
+                type="text"
+                required
+                placeholder="Abreviation"
+                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                value={this.state.abreviation}
+                onChange={this.onChangeAbreviation}
+              />
+              <div style={{ color: 'red' }}>{this.state.abreviationEror}</div>
+            </div>
+          </div>
+          <div className="mt-6 flex items-center justify-end">
+            <button
+              style={{ float: 'right' }}
+              type="button"
+              className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+              onClick={this.onSubmit}
+            >
+              Ajouter
+            </button>
+            <button
+              style={{ float: 'right' }}
+              type="button"
+              className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              onClick={this.annuler}
+            >
+              Annuler
+            </button>
+          </div>
+        </form>
       </div>
-        
-        )
-    }
+    );
+  }
 }
