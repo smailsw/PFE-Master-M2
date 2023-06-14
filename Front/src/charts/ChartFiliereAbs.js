@@ -1,73 +1,68 @@
-import React from "react";
-
-import CanvasJSReact from "../canvasjs.react";
+import React, { useEffect, useState } from "react";
 import Axios from "axios";
-// var CanvasJS = CanvasJSReact.CanvasJS;
-var CanvasJSChart = CanvasJSReact.CanvasJSChart;
-class ChartFiliereAbs extends React.Component {
-    state={ options : {
-        title: {
-            text: ""
-        },
-        data: [
-        {
-            // Change type to "doughnut", "line", "splineArea", etc.
-            type: "line",
-            dataPoints: [
-                
-                { label: "GED",  y: 1  },
-                { label: "GI", y: 3  },
-                { label: "TM", y: 4  },
-                { label: "GE",  y: 0  },
-                { label: "ISIL",  y: 0  },
-                
-            ]
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+
+const ChartFiliereAbs = () => {
+  const [chartData, setChartData] = useState([]);
+
+  useEffect(() => {
+    Axios.get("http://localhost:5000/absences")
+      .then((res) => {
+        const data = res.data.data;
+
+        if (!Array.isArray(data)) {
+          console.error("Data is not an array:", data);
+          return;
         }
-        ]
-    }
-}
-        componentDidMount(){
-            
-            Axios.get('http://localhost:5000/absences')
-                .then(res => {
-                    console.log("res.data",res.data.data);
 
-                     var f1= res.data.data.filter(elm => elm.id_Filiere === 1);
-                        var f2 = res.data.data.filter(elm => elm.id_Filiere === 2);
-                        var f3 = res.data.data.filter(elm => elm.id_Filiere === 3);
-                        var f4 = res.data.data.filter(elm => elm.id_Filiere === 4);
-                        var f5 = res.data.data.filter(elm => elm.id_Filiere === 5);
-                    console.log('zZz',f1.length, f2.length,f3.length, f4.length, f5.length)
-                    var r1= f1.length;
-                    var r2 = f2.length;
-                    var r3 = f3.length;
-                    var r4 = f4.length;
-                    var r5 = f5.length;
-                    console.log('ziiiiiiiiiiiiiiiiiiiiz',r1, r2, r3, r4, r5)
+        const counts = [0, 0, 0, 0, 0];
 
-                   
-                    var tab = [{label:"GED",y:r1}, {label:"GI",y:r2},{label:"TM",y:r3}, {label:"GE",y:r4}, {label:"ISIL",y:r5}]
-                    this.setState({
-                    options: { data: [{ dataPoints: tab }] }
-        })
+        data.forEach((elm) => {
+          if (!elm.hasOwnProperty("id_Filiere")) {
+            console.error("Missing id_Filiere property:", elm);
+            return;
+          }
+
+          counts[elm.id_Filiere - 1]++;
+        });
+
+        const labels = ["GED", "GI", "TM", "GE", "ISIL"];
+        const colors = ["#8884d8", "#82ca9d", "#ffc658", "#ffc0cb", "#888888"];
+        const chartData = labels.map((label, index) => ({ label, count: counts[index], fill: colors[index] }));
+
+        setChartData(chartData);
+        console.log(chartData);
       })
       .catch((error) => {
-        console.log(error);
-      })
+        console.log("Error retrieving data:", error);
+      });
+  }, []);
 
-            
-        }
-	render() {
-		
-		return (
-		<div>
-            <b>Nombre d'absence par Filières</b>
-			<CanvasJSChart options = {this.state.options}
-				 onRef={ref => this.chart = ref} 
-			/>
-			{/*You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods*/}
-		</div>
-		);
-	}
-}
+  return (
+    <div>
+      <div className="border-gray-200 bg-white pr-4 py-0 sm:pr-6 pb-3">
+        <h3 className="text-lg font-semibold leading-6 text-gray-900">Nombre d'absence par Filières</h3>
+      </div>
+      <ResponsiveContainer width="100%" height={300}>
+        <BarChart data={chartData}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="label" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+            <Bar key={chartData.label} dataKey="count" fill={chartData.fill} />
+        </BarChart>
+      </ResponsiveContainer>
+      <div style={{ display: "flex", justifyContent: "center", marginTop: "10px" }}>
+        {chartData.map((entry, index) => (
+          <div key={index} style={{ display: "flex", alignItems: "center", marginRight: "10px" }}>
+            <div style={{ width: "10px", height: "10px", backgroundColor: entry.fill, marginRight: "5px" }}></div>
+            <span>{entry.label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 export default ChartFiliereAbs;

@@ -1,89 +1,55 @@
-import CanvasJSReact from "../canvasjs.react";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import { format, parseISO } from "date-fns";
 import Axios from "axios";
 
-// var CanvasJS = CanvasJSReact.CanvasJS;
-var CanvasJSChart = CanvasJSReact.CanvasJSChart;
-class ChartTest extends React.Component {
-    componentDidMount(){
-            
-        Axios.get('http://localhost:5000/absences')
-            .then(res => {
-                console.log("res.data",res.data.data);
+const ChartTest = () => {
+  const [chartData, setChartData] = useState([]);
 
-                //  var f1= res.data.data.filter(elm => elm.id_Filiere === 1);
-                //     var f2 = res.data.data.filter(elm => elm.id_Filiere === 2);
-                //     var f3 = res.data.data.filter(elm => elm.id_Filiere === 3);
-                //     var f4 = res.data.data.filter(elm => elm.id_Filiere === 4);
-                //     var f5 = res.data.data.filter(elm => elm.id_Filiere === 5);
-                // console.log('zZz',f1.length, f2.length,f3.length, f4.length, f5.length)
-                // var r1= f1.length;
-                // var r2 = f2.length;
-                // var r3 = f3.length;
-                // var r4 = f4.length;
-                // var r5 = f5.length;
-                // console.log('ziiiiiiiiiiiiiiiiiiiiz',r1, r2, r3, r4, r5)
+  useEffect(() => {
+    Axios.get("http://localhost:5000/absences")
+      .then((res) => {
+        console.log("res.data", res.data.data);
 
-               
-                var tab = [
-                    { x: new Date(2020, 6,1), y: 1 },
-					{ x: new Date(2020, 6,2), y: 4 },
-					{ x: new Date(2020, 6,3), y: 3 },
-					{ x: new Date(2020, 6,4), y: 6 },
-					{ x: new Date(2020, 6,5), y: 5 },
-					{ x: new Date(2020, 6,6), y: 9 },
-					{ x: new Date(2020, 6,7), y: 7 },
-                ]
-                this.setState({
-                options: { data: [{ dataPoints: tab }] }
-    })
-  })
-  .catch((error) => {
-    console.log(error);
-  })
+        var tab = [
+          { x: new Date(2020, 6, 1), y: 1 },
+          { x: new Date(2020, 6, 2), y: 4 },
+          { x: new Date(2020, 6, 3), y: 3 },
+          { x: new Date(2020, 6, 4), y: 6 },
+          { x: new Date(2020, 6, 5), y: 5 },
+          { x: new Date(2020, 6, 6), y: 9 },
+          { x: new Date(2020, 6, 7), y: 7 },
+        ];
+        setChartData(tab);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
-        
-    }
-	render() {
-		const options = {
-			animationEnabled: true,
-			title:{
-				text: ""
-			},
-			axisX: {
-				valueFormatString: "DDDD"
-			},
-			axisY: {
-				title: "Nombre d'absence",
-				
-				includeZero: false
-			},
-			data: [{
-				yValueFormatString: "#,###",
-				xValueFormatString: "DDDD",
-				type: "spline",
-				dataPoints: [
-					{ x: new Date(2020, 6,1), y: 1 },
-					{ x: new Date(2020, 6,2), y: 4 },
-					{ x: new Date(2020, 6,3), y: 3 },
-					{ x: new Date(2020, 6,4), y: 6 },
-					{ x: new Date(2020, 6,5), y: 5 },
-					{ x: new Date(2020, 6,6), y: 9 },
-					{ x: new Date(2020, 6,7), y: 7 },
-					
-				]
-			}]
-        }
-        
-		return (
-		<div>
-            <b>Variation de l'absence durant la semaine</b>
-			<CanvasJSChart options = {options}
-				/* onRef={ref => this.chart = ref} */
-			/>
-			{/*You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods*/}
-		</div>
-		);
-	}
-}
-export default ChartTest; 
+  const formatXAxis = (tickItem) => {
+    const formattedDate = format(tickItem, "dd MMM");
+    const dayName = format(tickItem, "EEEE");
+
+    return `${formattedDate} (${dayName})`;
+  };
+
+  return (
+    <div>
+      <div className="border-gray-200 bg-white pr-4 py-0 sm:pr-6 pb-3">
+        <h3 className="text-lg font-semibold leading-6 text-gray-900">Variation de l'absence durant la semaine</h3>
+      </div>
+      <ResponsiveContainer width="100%" height={300}>
+        <LineChart data={chartData}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="x" tickFormatter={formatXAxis} />
+          <YAxis />
+          <Tooltip />
+          <Line type="monotone" dataKey="y" stroke="#8884d8" activeDot={{ r: 8 }} />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
+  );
+};
+
+export default ChartTest;

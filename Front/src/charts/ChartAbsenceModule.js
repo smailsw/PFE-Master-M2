@@ -1,73 +1,77 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
-import CanvasJSReact from "../canvasjs.react";
-import Axios from "axios";
-// var CanvasJS = CanvasJSReact.CanvasJS;
-var CanvasJSChart = CanvasJSReact.CanvasJSChart;
-class ChartAbsenceModule extends React.Component {
-    state={ options : {
-        title: {
-            text: ""
-        },
-        data: [
-        {
-            // Change type to "doughnut", "line", "splineArea", etc.
-            type: "column",
-            dataPoints: [
-                { label: "Java",  y: 1  },
-                { label: "Web", y: 3  },
-                { label: "Reseau", y: 4  },
-                { label: "UML",  y: 0  },
-                { label: "TEC",  y: 0  },
-                
-            ]
+const ChartAbsenceModule = () => {
+  const [chartData, setChartData] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/absences")
+      .then((res) => {
+        const data = res.data.data;
+
+        if (!Array.isArray(data)) {
+          console.error("Data is not an array:", data);
+          return;
         }
-        ]
-    }
-}
-        componentDidMount(){
-            console.log('id user', localStorage.getItem('user'));
-            Axios.get('http://localhost:5000/absences/').then(
-                res =>{
-                    console.log(res.data)
-                    var r1= res.data.data.filter(elm => elm.id_Module === 1);
-                    var r2 = res.data.data.filter(elm => elm.id_Module === 2);
-                    var r3 = res.data.data.filter(elm => elm.id_Module === 3);
-                    var r4 = res.data.data.filter(elm => elm.id_Module === 4);
-                    var r5 = res.data.data.filter(elm => elm.id_Module === 5);
-                    console.log('ziiiiiiiiiiiiiiiiiiiiz',r1.length, r2.length, r3.length, r4.length, r5.length)
 
-                    var m1= r1.length;
-                    var m2 = r2.length;
-                    var m3 = r3.length;
-                    var m4 =r4.length;
-                    var m5 =r5.length;
-                    var tab = [{label:"java",y:m1}, {label:"Web",y:m2},{label:"Reseau",y:m3}, {label:"UML",y:m4}, {label:"TEC",y:m5}]
-                    this.setState({
-                    options: { data: [{ dataPoints: tab }] }
+        const counts = [0, 0, 0, 0, 0];
 
-                    })
-                }
-            )
-            .catch(
-                (err) =>{
-                    console.log(err)
-                }
-            )
+        data.forEach((elm) => {
+          if (!elm.hasOwnProperty("id_Module")) {
+            console.error("Missing id_Module property:", elm);
+            return;
+          }
 
-            
-        }
-	render() {
-		
-		return (
-		<div>
-            <b>Nombre d'absence par modules</b>
-			<CanvasJSChart options = {this.state.options}
-				 onRef={ref => this.chart = ref} 
-			/>
-			{/*You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods*/}
-		</div>
-		);
-	}
-}
+          counts[elm.id_Module - 1]++;
+        });
+
+        const labels = ["Java", "Web", "Reseau", "UML", "TEC"];
+        const colors = ["#8884d8", "#82ca9d", "#ffc658", "#ffc0cb", "#888888"];
+        const chartData = labels.map((label, index) => ({ label, count: counts[index], fill: colors[index] }));
+
+        setChartData(chartData);
+      })
+      .catch((error) => {
+        console.log("Error retrieving data:", error);
+      });
+  }, []);
+
+  return (
+    <div>
+              <div className=" border-gray-200 bg-white pr-4 py-0 sm:pr-6 pb-3">
+          <h3 className="text-lg font-semibold leading-6 text-gray-900">
+          Nombre d'absence par modules
+          </h3>
+        </div>
+      <ResponsiveContainer width="100%" height={300}>
+        <BarChart data={chartData}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="label" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+            <Bar key={chartData.label} dataKey="count" fill={chartData.fill} />
+        </BarChart>
+      </ResponsiveContainer>
+      <div style={{ display: "flex", justifyContent: "center", marginTop: "10px" }}>
+        {chartData.map((entry, index) => (
+          <div key={index} style={{ display: "flex", alignItems: "center", marginRight: "10px" }}>
+            <div
+              style={{
+                width: "10px",
+                height: "10px",
+                backgroundColor: entry.fill,
+                marginRight: "5px",
+              }}
+            ></div>
+            <span>{entry.label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 export default ChartAbsenceModule;

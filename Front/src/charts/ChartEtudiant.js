@@ -1,67 +1,65 @@
-import React from "react";
-import { Pie } from "react-chartjs-2";
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+import axios from "axios";
 
-class ChartEtudiant extends React.Component {
-  state = {
-    dataPie: {
-      labels: ['Etudiantes', 'Etudiants'],
-      datasets: [
-        {
-          data: [20, 80, 100],
-          backgroundColor: [
-            "#F8765B",
-            "#46BFBD",
-          ],
-          hoverBackgroundColor: [
-            "#FF5A5E",
-            "#5AD3D1"
-          ]
+const ChartEtudiant = () => {
+  const [chartData, setChartData] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/etudiants")
+      .then((res) => {
+        const data = res.data.data;
+
+        if (!Array.isArray(data)) {
+          console.error("Data is not an array:", data);
+          return;
         }
-      ]
-    }
-  }
-  componentDidMount() {
 
-    axios.get('http://localhost:5000/etudiants')
-      .then(res => {
-        console.log("res.data",res.data.data);
+        const males = data.filter((elm) => elm.sexe !== "F");
+        const females = data.filter((elm) => elm.sexe !== "H");
 
-        var m = res.data.data.filter(elm => elm.sexe !== 'F');
-        var f = res.data.data.filter(elm => elm.sexe !== 'H')
-        // console.log("etudiants "+m.length);
-        // console.log("etudiantes "+f.length);
-        var tab = [f.length, m.length]
-        this.setState({
-          dataPie: { datasets: [{ data: tab }] }
+        const chartData = [
+          { name: "Etudiantes", value: females.length, fill: "#F8765B" },
+          { name: "Etudiants", value: males.length, fill: "#46BFBD" },
+        ];
 
-
-        })
+        setChartData(chartData);
+        console.log("chartData", chartData);
       })
       .catch((error) => {
-        console.log(error);
-      })
+        console.log("Error retrieving data:", error);
+      });
+  }, []);
 
-
-
-
-  }
-
-
-
-
-  render() {
-    return (
-
-      <div className="db">   
-          <br/>
-          <b>Nombre totale des étudiants dans l'école</b>
-          <Pie data={this.state.dataPie} options={{ responsive: true }} />
-           <br></br>
-      </div>
-
-    );
-  }
-}
+  return (
+    <div className="db">
+      <br />
+      <div className=" border-gray-200 bg-white pr-4 py-0 sm:pr-6 pb-3">
+          <h3 className="text-lg font-semibold leading-6 text-gray-900">
+          Nombre totale des étudiants dans l'école
+          </h3>
+        </div>
+      <ResponsiveContainer width="100%" height={500}>
+        <PieChart>
+          <Pie
+            data={chartData}
+            dataKey="value"
+            nameKey="name"
+            cx="50%"
+            cy="50%"
+            outerRadius={200}
+            label={(entry) => entry.name + ": (" + entry.value+")"}
+          >
+            {chartData.map((entry, index) => (
+              <Cell key={index} fill={entry.fill} />
+            ))}
+          </Pie>
+        </PieChart>
+      </ResponsiveContainer>
+      <br />
+    </div>
+  );
+};
 
 export default ChartEtudiant;

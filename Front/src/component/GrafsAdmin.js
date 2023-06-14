@@ -7,6 +7,7 @@ import history from '../history';
 import ChartFiliereAbs from '../charts/ChartFiliereAbs';
 import ChartEtudiant from '../charts/ChartEtudiant';
 import ChartTest from '../charts/ChatTest';
+import ChartAbsFiliere from '../charts/ChartAbsFiliere';
 
 export default class GrafsAdmin extends Component {
     
@@ -35,6 +36,9 @@ export default class GrafsAdmin extends Component {
                 </div>
                 <div className="col-md-6">
                 <ChartTest/>
+                </div>
+                <div className="col-md-6">
+                <ChartAbsFiliere/>
                 </div>
               </div>
            
