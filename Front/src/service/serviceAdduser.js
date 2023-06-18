@@ -2,6 +2,7 @@ import axios from 'axios'
 import {config} from '../service/config';
 
 export const adduser = user => {
+  console.log(user);
   return axios
     .post(config+'users/register', {
       first_name: user.nom,

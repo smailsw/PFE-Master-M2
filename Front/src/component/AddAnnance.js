@@ -103,7 +103,7 @@ export default class AddAnnance extends Component {
   }
 
   annuler(e) {
-    history.push('/annances');
+    history.push('/annonces');
     window.location.reload(false);
   }
 

@@ -35,6 +35,7 @@ export const login = user => {
       return response.data.user
     })
     .catch(err => {
-      console.log(err)
+      console.log("Error Login service "+err);
+      return 400;
     })
 }

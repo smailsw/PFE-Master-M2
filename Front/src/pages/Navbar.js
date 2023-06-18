@@ -30,7 +30,7 @@ import Axios from "axios";
 import history from "../history";
 import EditCUser from "../component/EditCUser";
 import EtudiantCompte from "../component/EtudiantCompte";
-import Annances from "../component/Annances";
+import Annonces from "../component/Annonces";
 import AddAnnance from "../component/AddAnnance";
 import addListeAdmin from "../component/addListeAdmin";
 import addListeUser from "../component/addListeUser";
@@ -98,6 +98,7 @@ export default class NavBar extends Component {
 <LayoutCustom role={this.state.role} signout={this.props.signout} userID={this.state.id}>
 <Switch>
               {/* <Route path="*" exact component={NotFound} />  */}
+              <Route path="/" exact component={AcueilAdmin} />
               <Route path="/admins" exact component={Admin} />
               <Route path="/addAdmin" exact component={addAdmin} />
               <Route path="/EditAdmin/:id" exact component={EditAdmin} />
@@ -134,7 +135,7 @@ export default class NavBar extends Component {
 
               <Route path="/EditCUser/:id" exact component={EditCUser} />
 
-              <Route path="/annances" exact component={Annances} />
+              <Route path="/annonces" exact component={Annonces} />
               <Route path="/AddAnnance" exact component={AddAnnance} />
 
               <Route path="/addListeAdmin" exact component={addListeAdmin} />

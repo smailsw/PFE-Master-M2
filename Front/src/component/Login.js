@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { login } from '../service/serviceLogin';
-
+import toast, { Toaster } from 'react-hot-toast';
+import "react-toastify/dist/ReactToastify.css";
 export default class Login extends Component {
   constructor(props) {
     super(props);
@@ -57,22 +58,34 @@ export default class Login extends Component {
 
     const isValid = this.validateForm();
     if (isValid) {
+      console.log("Login Process");
       login(user).then(res => {
-        if (res) {
+        if (res==400) {
+          toast.error("There is a problem with the validation of the information.")
+        }else{
           localStorage.setItem('loggedIn', true);
           this.props.signIn(res);
           console.log("You have successfully logged in:", res.user);
         }
+      }).catch(err => {
+        console.log(err)
+        toast.error("There is a problem with the validation of the information.")
+
       });
     } else {
       console.log("There is a problem with the validation of the information.");
-      alert("There is a problem with the validation of the information.");
+      toast.error("There is a problem with the validation of the information.")
+
     }
   }
 
   render() {
     return (
       <>
+        <Toaster
+          position="top-right"
+          reverseOrder={false}
+        />
         <div className="flex min-h-screen">
           <div className="flex flex-col justify-center flex-1 px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
             <div className="mx-auto w-full max-w-sm lg:w-96">

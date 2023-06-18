@@ -4,7 +4,6 @@ import NavBar from "../pages/Navbar";
 import history from "../history";
 import HeaderCustom from "../pages/HeaderCustom";
 import Axios from "axios";
-
 export default class Home extends Component {
   constructor(props) {
     super(props);

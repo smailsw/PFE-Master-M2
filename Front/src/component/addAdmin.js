@@ -81,7 +81,7 @@ export default class AddAdmin extends Component {
       email: this.state.email,
       adresse: this.state.adresse
     };
-
+    console.log(admin)
     const isValid = this.validate();
     if (isValid) {
       addadmin(admin)

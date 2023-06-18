@@ -3,27 +3,27 @@ import Axios from 'axios';
 import '../css/admin.css';
 import history from '../history';
 
-export default class Annances extends Component {
+export default class Annonces extends Component {
   constructor(props) {
     super(props);
     this.OnchangeState = this.OnchangeState.bind(this);
 
     this.state = {
       val: '',
-      annances: [],
+      annonces: [],
       listFilter: [],
       NomFiliere: '',
     };
   }
 
   componentDidMount() {
-    Axios.get('http://localhost:5000/annances/')
+    Axios.get('http://localhost:5000/annonces/')
       .then((res) => {
         this.setState({
-          annances: res.data.data,
+          annonces: res.data.data,
           listFilter: res.data.data,
         });
-        console.log('annances----->', res.data.data);
+        console.log('annonces----->', res.data.data);
       })
       .catch((error) => {
         console.log(error);
@@ -50,7 +50,7 @@ export default class Annances extends Component {
 
   deleteAnnance(id_Annance) {
     console.log(id_Annance);
-    Axios.delete('http://localhost:5000/annances/delete/' + id_Annance)
+    Axios.delete('http://localhost:5000/annonces/delete/' + id_Annance)
       .then((res) => console.log(res.data))
       .then();
 
@@ -66,7 +66,7 @@ export default class Annances extends Component {
       },
       () => {
         this.setState({
-          listFilter: this.state.annances.filter((elm) => elm.sujet.includes(this.state.val)),
+          listFilter: this.state.annonces.filter((elm) => elm.sujet.includes(this.state.val)),
         });
       }
     );

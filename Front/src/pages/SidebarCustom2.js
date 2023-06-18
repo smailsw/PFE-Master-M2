@@ -27,7 +27,7 @@ const navigation = [
       { name: 'Professeurs', to: '/professeurs',restrictTo:["Prof","Etudiant"] },
       { name: 'Seances', to: '/Seances',restrictTo:["Admin","Etudiant"] },
       { name: 'Absences', to: '/Absences',restrictTo:["Admin","Etudiant"] },
-      { name: 'Annonces', to: '/annances',restrictTo:["Admin","Etudiant"] },
+      { name: 'Annonces', to: '/annonces',restrictTo:["Admin","Etudiant"] },
       { name: 'Statistiques', to: '/grafs',restrictTo:["Admin","Etudiant"] },
     ],
   },

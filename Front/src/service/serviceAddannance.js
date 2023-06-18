@@ -4,7 +4,7 @@ import {config} from '../service/config';
 
 export const addannance = annance => {
   return axios
-    .post(config+'annances/AddAnnance', {
+    .post(config+'annonces/AddAnnance', {
       sujet: annance.sujet,
       desc: annance.desc,
       id_Filiere: annance.selectFiliere

@@ -92,9 +92,9 @@ export default class EtudiantCompte extends Component {
         console.log(error);
       });
 
-    Axios.get("http://localhost:5000/annances/ByIdFiliere/" + 2)
+    Axios.get("http://localhost:5000/annonces/ByIdFiliere/" + 2)
       .then((res) => {
-        console.log("annances where id filiere ------>", res.data.data[0]);
+        console.log("annonces where id filiere ------>", res.data.data[0]);
         toast.info(res.data.data[0].sujet + ": " + res.data.data[0].desc, {
           position: "top-right",
           autoClose: 10000,
