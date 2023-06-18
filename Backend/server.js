@@ -3,6 +3,7 @@ var cors = require('cors')
 var bodyParser = require('body-parser')
 var app = express()
 var port = process.env.PORT || 5000
+const db = require('./database/db.js')
 
 app.use(bodyParser.json())
 app.use(cors())
@@ -52,12 +53,27 @@ var Absences = require('./routes/Absences')
 
 app.use('/absences', Absences)
 
-//annance
-var Annances = require('./routes/Annances')
+//annonce
+var Annonces = require('./routes/Annonces')
 
-app.use('/annances', Annances)
+app.use('/annonces', Annonces)
 
-
+//test connection
+app.get('/', (req, res) => {
+  res.sendStatus(200);
+});
+//test db connection
+app.get('/dbtest', (req, res) => {
+  db.sequelize
+    .authenticate()
+    .then(() => {
+      res.send('Database connection successful!');
+    })
+    .catch((error) => {
+      console.error('Database connection error:', error);
+      res.sendStatus(500);
+    });
+});
 app.listen(port, function() {
   console.log('Server is running on port: ' + port)
 })

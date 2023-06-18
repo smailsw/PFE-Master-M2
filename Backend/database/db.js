@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const db = {};
 const sequelize = new Sequelize('pfedb', 'root', 'ismail', {
-  host: 'pfe-test-mysql', // Replace with Docker container name or IP address
+  host: 'localhost', // Replace with Docker container name or IP address
   port: '3306', // Replace with Docker container port if mapped differently
   dialect: 'mysql',
   operatorsAliases: false,
@@ -15,7 +15,6 @@ const sequelize = new Sequelize('pfedb', 'root', 'ismail', {
     idle: 10000
   }
 });
-
 // const Employee= require('../Models/Employee')(sequelize, Sequelize)
 // const Project= require('../Models/Project')(sequelize, Sequelize)
 

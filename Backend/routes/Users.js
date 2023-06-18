@@ -108,6 +108,7 @@ users.post('/login', (req, res) => {
 
 
 users.post('/register', (req, res) => {
+  console.log('register--------',req.body);
   const today = new Date()
   const userData = {
     first_name: req.body.first_name,
@@ -126,17 +127,21 @@ users.post('/register', (req, res) => {
     //TODO bcrypt
     .then(user => {
       if (!user) {
+        console.log(user)
         bcrypt.hash(req.body.password, 10, (err, hash) => {
+          console.log('hash------------------>',hash);
           userData.password = hash
           User.create(userData)
-            .then(user => {
-              res.json({ status: user.email + 'Registered!' })
+            .then(userd => {
+              res.json({ status: userd.email + 'Registered!' })
             })
             .catch(err => {
+              console.log('err------------------>',err);
               res.send('error: ' + err)
             })
         })
       } else {
+        console.log('user exist-');
         res.json({ error: 'User already exists' })
       }
     })

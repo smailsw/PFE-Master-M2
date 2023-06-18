@@ -58,6 +58,7 @@ admins.put('/:id', (req, res) => {
 
 admins.post('/AddAdmin', (req, res) => {
   const today = new Date()
+  console.log(req.body);
   const adminData = {
     first_name: req.body.first_name,
     last_name: req.body.last_name,

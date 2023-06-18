@@ -1,14 +1,14 @@
 const express = require('express')
-const annances = express.Router()
+const annonces = express.Router()
 const cors = require('cors')
 
-const Annance = require('../Models/Annance')
-annances.use(cors())
+const Annonce = require('../Models/Annonce')
+annonces.use(cors())
 
 process.env.SECRET_KEY = 'secret'
 
-annances.get('/', (req, res) => {
-    Annance.findAndCountAll()
+annonces.get('/', (req, res) => {
+    Annonce.findAndCountAll()
 .then(result=>res.json({'data' : result['rows'],'count' : result['count'] } ))
 .catch(err => res.status(400).json('Error: '+err));
 })
@@ -16,9 +16,9 @@ annances.get('/', (req, res) => {
 
 
 
-annances.get('/:id_Annance', (req, res) => {
-    Annance.findOne(
-   { where: {id_Annance: req.params.id_Annance}
+annonces.get('/:id_Annonce', (req, res) => {
+    Annonce.findOne(
+   { where: {id_Annonce: req.params.id_Annonce}
     }
     
   )
@@ -27,9 +27,9 @@ annances.get('/:id_Annance', (req, res) => {
 })
 
 
-//get annance by id_filiere
-annances.get('/ByIdFiliere/:id_Filiere', (req, res) => {
-    Annance.findAndCountAll(
+//get annonce by id_filiere
+annonces.get('/ByIdFiliere/:id_Filiere', (req, res) => {
+    Annonce.findAndCountAll(
    { where: {id_Filiere: req.params.id_Filiere}
     }
     
@@ -38,26 +38,26 @@ annances.get('/ByIdFiliere/:id_Filiere', (req, res) => {
 .catch(err => res.status(400).json('Error: '+err));
 })
 
-annances.delete('/delete/:id_Annance', (req, res) => {
-    Annance.destroy({
-    where: {id_Annance: req.params.id_Annance},
+annonces.delete('/delete/:id_Annonce', (req, res) => {
+    Annonce.destroy({
+    where: {id_Annonce: req.params.id_Annonce},
   })
 .then(result=>res.json({ result} ))
 .catch(err => res.status(400).json('Error: '+err));
 })
 
 
-annances.put('/:id_Annance', (req, res) => {
+annonces.put('/:id_Annonce', (req, res) => {
   const today = new Date()
-  const AnnanceDataUp = {
+  const AnnonceDataUp = {
     sujet: req.body.sujet,
     desc: req.body.desc,
     id_Filiere: req.body.id_Filiere,
     created: today,
   }
-  Annance.update(
-    AnnanceDataUp,
-    {where:{id_Annance: req.params.id_Annance}})
+  Annonce.update(
+    AnnonceDataUp,
+    {where:{id_Annonce: req.params.id_Annonce}})
   .then(result=>res.json( result ))
 .catch(err => res.status(400).json('Error: '+err));
 })
@@ -65,9 +65,9 @@ annances.put('/:id_Annance', (req, res) => {
 
 
 
-annances.post('/AddAnnance', (req, res) => {
+annonces.post('/AddAnnonce', (req, res) => {
   const today = new Date()
-  const AnnanceData = {
+  const AnnonceData = {
     sujet: req.body.sujet,
     desc: req.body.desc,
     id_Filiere: req.body.id_Filiere,
@@ -75,24 +75,24 @@ annances.post('/AddAnnance', (req, res) => {
     
   }
 
-  Annance.findOne({
+  Annonce.findOne({
     where: {
         sujet: req.body.sujet
     }
   })
     //TODO bcrypt
-    .then(annance => {
-      if (!annance) {
-        Annance.create(AnnanceData)
-            .then(annance => {
-              res.json({ status: annance.sujet + '  Add with sucsess!' })
+    .then(annonce => {
+      if (!annonce) {
+        Annonce.create(AnnonceData)
+            .then(annonce => {
+              res.json({ status: annonce.sujet + '  Add with sucsess!' })
             })
             .catch(err => {
               res.send('error: ' + err)
             })
         
       } else {
-        res.json({ error: 'annance already exists' })
+        res.json({ error: 'annonce already exists' })
       }
     })
     .catch(err => {
@@ -101,4 +101,4 @@ annances.post('/AddAnnance', (req, res) => {
 })
 
 
-module.exports = annances
+module.exports = annonces
