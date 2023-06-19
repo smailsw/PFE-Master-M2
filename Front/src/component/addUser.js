@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { adduser } from '../service/serviceAdduser';
 import history from '../history';
-
+import Axios from 'axios';
 const initialState = {
   nom: '',
   prenom: '',
@@ -14,7 +14,10 @@ const initialState = {
   passwordEror: '',
   roleEror: '',
   message: '',
-  addS: null
+  selectedUser: {},
+  selectedUserFullName: "",
+  addS: null,
+  listAccounts: [],
 };
 
 export default class AddUser extends Component {
@@ -52,11 +55,60 @@ export default class AddUser extends Component {
       password: e.target.value
     });
   };
-
+  onChangeUser = (e) => {
+    let fullName=JSON.parse(e.target[e.target.selectedIndex].id).email;
+    this.setState({
+      selectedUserFullName:String(fullName),
+      selectedUser: e.target[e.target.selectedIndex].id,
+      nom: JSON.parse(e.target[e.target.selectedIndex].id).last_name,
+      prenom: JSON.parse(e.target[e.target.selectedIndex].id).first_name,
+      email: JSON.parse(e.target[e.target.selectedIndex].id).email,
+    });
+    console.log(this.state.selectedUserFullName);
+    
+  };
   onChangeRole = (e) => {
     this.setState({
-      role: e.target.value
+      role: e.target.value,
+      selectedUser: {},
+      selectedUserFullName: "",
     });
+
+    if(e.target.value === "Admin"){
+      Axios.get("http://localhost:5000/admins/")
+      .then((res) => {
+        this.setState({
+          listAccounts: res.data.data,
+        });
+        console.log(res.data.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    }else if(e.target.value === "Prof"){
+      Axios.get("http://localhost:5000/profs/")
+      .then((res) => {
+        this.setState({
+          listAccounts: res.data.data,
+        });
+        console.log(res.data.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    }else if(e.target.value === "Etudiant"){
+      Axios.get("http://localhost:5000/etudiants/")
+      .then((res) => {
+        this.setState({
+          listAccounts: res.data.data,
+        });
+        console.log(res.data.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    }
+
   };
 
   validate = () => {
@@ -134,10 +186,44 @@ export default class AddUser extends Component {
               </button>
             </div>
           </div>
-          <h3 className="text-lg font-semibold leading-6 text-gray-900">Ajouter un utilisateur</h3>
+          <h3 className="text-lg font-semibold leading-6 text-gray-900">Ajouter un accès utilisateur</h3>
           <hr className="my-4" />
           <div className="grid grid-cols-2 gap-6">
+          <div className="col-span-2 sm:col-span-1">
+              <label htmlFor="role" className="block text-sm font-medium text-gray-700">
+                Rôle:
+              </label>
+              <select
+                className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                value={this.state.role}
+                onChange={this.onChangeRole}
+              >
+                <option value="" disabled></option>
+                <option value="Admin">Admin</option>
+                <option value="Prof">Prof</option>
+                <option value="Etudiant">Etudiant</option>
+              </select>
+              <div style={{ color: 'red' }}>{this.state.roleEror}</div>
+            </div>
+            
             <div className="col-span-2 sm:col-span-1">
+              <label htmlFor="role" className="block text-sm font-medium text-gray-700">
+                Users:
+              </label>
+              <select
+                className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                value={this.state.selectedUserFullName}
+                onChange={this.onChangeUser}
+              >
+                <option value="" disabled></option>
+                {this.state.listAccounts.map((admin) => (
+                  <option id={JSON.stringify(admin)} value={admin.email}>{admin.first_name+" "+admin.last_name}</option>
+                ))}
+              </select>
+              <div style={{ color: 'red' }}>{this.state.roleEror}</div>
+            </div>
+
+            <div className="col-span-2 sm:col-span-1 ">
               <label htmlFor="nom" className="block text-sm font-medium text-gray-700">
                 Nom:
               </label>
@@ -145,13 +231,14 @@ export default class AddUser extends Component {
                 type="text"
                 required
                 placeholder="Nom"
-                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md bg-gray-100"
                 value={this.state.nom}
                 onChange={this.onChangeNom}
+                disabled
               />
               <div style={{ color: 'red' }}>{this.state.nomEror}</div>
             </div>
-
+              
             <div className="col-span-2 sm:col-span-1">
               <label htmlFor="prenom" className="block text-sm font-medium text-gray-700">
                 Prénom:
@@ -160,9 +247,10 @@ export default class AddUser extends Component {
                 type="text"
                 required
                 placeholder="Prénom"
-                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md bg-gray-100"
                 value={this.state.prenom}
                 onChange={this.onChangePrenom}
+                disabled
               />
               <div style={{ color: 'red' }}>{this.state.prenomEror}</div>
             </div>
@@ -175,9 +263,10 @@ export default class AddUser extends Component {
                 type="text"
                 required
                 placeholder="Email"
-                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md bg-gray-100"
                 value={this.state.email}
                 onChange={this.onChangeEmail}
+                disabled
               />
               <div style={{ color: 'red' }}>{this.state.emailEror}</div>
             </div>
@@ -197,21 +286,6 @@ export default class AddUser extends Component {
               <div style={{ color: 'red' }}>{this.state.passwordEror}</div>
             </div>
 
-            <div className="col-span-2 sm:col-span-1">
-              <label htmlFor="role" className="block text-sm font-medium text-gray-700">
-                Rôle:
-              </label>
-              <select
-                className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                value={this.state.role}
-                onChange={this.onChangeRole}
-              >
-                <option value="Admin">Admin</option>
-                <option value="Prof">Prof</option>
-                <option value="Etudiant">Etudiant</option>
-              </select>
-              <div style={{ color: 'red' }}>{this.state.roleEror}</div>
-            </div>
           </div>
           <div className="mt-6 flex items-center justify-end">
             <button

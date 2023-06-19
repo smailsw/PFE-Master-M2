@@ -36,25 +36,25 @@ export default function HeaderCustom(props) {
                   </Link>
                   <Link
                     to="/admins"
-                    className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                    className={"inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"+(props.role==="Admin"?"":" hidden")}
                   >
                     Espace Administration
                   </Link>
                   <Link
                     to="/grafsAdmin"
-                    className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                    className={"inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"+((props.role==="Admin" ||props.role==="Prof")?"":" hidden")}
                   >
                     Espace des statistiques
                   </Link>
                   <Link
                     to="/etudiants"
-                    className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                    className={"inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"+((props.role==="Admin" ||props.role==="Prof")?"":" hidden")}
                   >
                     Espace Etudiants
                   </Link>
                   <Link
                     to="/professeurs"
-                    className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                    className={"inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"+(props.role==="Admin"?"":" hidden")}
                   >
                     Espace Professeurs
                   </Link>
@@ -69,7 +69,7 @@ export default function HeaderCustom(props) {
                       <span className="sr-only">Open user menu</span>
                       <img
                         className="h-8 w-8 rounded-full"
-src='https://www.pngall.com/wp-content/uploads/5/User-Profile-PNG-High-Quality-Image.png'
+                        src='https://www.pngall.com/wp-content/uploads/5/User-Profile-PNG-High-Quality-Image.png'
                         alt=""
                       />
                     </Menu.Button>

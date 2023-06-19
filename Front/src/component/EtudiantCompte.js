@@ -55,8 +55,9 @@ export default class EtudiantCompte extends Component {
 
   componentDidMount() {
     const i = localStorage.getItem("user");
-    console.log("i----------------->", i);
-    Axios.get("http://localhost:5000/etudiants/" + i)
+    const { id } = this.props.match.params;
+    if(id){
+      Axios.get("http://localhost:5000/etudiants/" + id)
       .then((res) => {
         console.log("etudaint---------------> ", res.data);
         this.setState({
@@ -76,6 +77,29 @@ export default class EtudiantCompte extends Component {
       .catch((error) => {
         console.log(error);
       });
+    }else{
+      Axios.get("http://localhost:5000/etudiants/" + i)
+      .then((res) => {
+        console.log("etudaint---------------> ", res.data);
+        this.setState({
+          nom: res.data.first_name,
+          prenom: res.data.last_name,
+          email: res.data.email,
+          adresse: res.data.adresse,
+          cin: res.data.cin,
+          cne: res.data.cne,
+          date_Naissance: res.data.date_naissance,
+          telephone: res.data.telephone,
+          id_Filiere: res.data.id_Filiere,
+        });
+
+        console.log("urlimage --------------------->", res.data.urlImage);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    }
+
 
     var iy = this.state.id_Filiere;
     console.log("id_Filiere ---------------------> ", iy);

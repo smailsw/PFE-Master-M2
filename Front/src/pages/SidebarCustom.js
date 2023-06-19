@@ -31,7 +31,7 @@ const navigation = [
     noAccess:["Prof"],
     children: [
       { name: 'Etudiants', to: '/etudiants',restrictTo:["Prof","Etudiant"] },
-      { name: "Compte de l'Etudiant", to: '/etudiantCompte',restrictTo:["Prof","Etudiant"] },
+      { name: "Compte de l'Etudiant", to: '/etudiantCompte',restrictTo:["Admin","Prof"] },
 
     ],
   },
@@ -85,10 +85,10 @@ export default function SidebarCustom(props) {
                         'block rounded-md py-2 pr-2 pl-10 text-sm leading-6 font-semibold text-gray-700'
                       )}
                     >
-                      {item.name}
+                  {item.nam}
                     </Link>
                   ) : (
-                    <Disclosure as="div">
+                    <Disclosure as="div" className={((item.noAccess && item.noAccess.includes(props.role))?" hidden":"")}>
                       {({ open }) => (
                         <>
                           <Disclosure.Button
@@ -106,9 +106,9 @@ export default function SidebarCustom(props) {
                             />
                             {item.name}
                           </Disclosure.Button>
-                          <Disclosure.Panel as="ul" className="mt-1 px-2" hidden={item.noAccess && item.noAccess.includes(props.role)}>
+                          <Disclosure.Panel as="ul" className={"mt-1 px-2"+((item.noAccess && item.noAccess.includes(props.role))?" hidden":"")}>
                             {item.children.map((subItem) => (
-                              <li key={subItem.name}>
+                              <li key={subItem.name} hidden={subItem.restrictTo && subItem.restrictTo.includes(props.role)}>
                                 <Link
                                   as="a"
                                   to={subItem.to}

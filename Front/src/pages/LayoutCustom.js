@@ -130,7 +130,7 @@ export default function LayoutCustom({children,role,signout,userID}) {
 
             {/* Separator */}
             <div className="h-6 w-px bg-gray-200 lg:hidden" aria-hidden="true" />
-            <HeaderCustom signout={signout} userID={userID} />
+            <HeaderCustom signout={signout} userID={userID} role={role}/>
 
           </div>
 

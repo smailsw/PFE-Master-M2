@@ -56,6 +56,10 @@ export default class Etudiant extends Component {
     history.push('/EditEtudiant/' + Id_Etudiant);
     window.location.reload(false);
   }
+  onRowClick(Id_Etudiant) {
+    history.push('/EtudiantCompte/' + Id_Etudiant);
+    window.location.reload(false);
+  }
 
   deleteEtudiant(id_Etudiant) {
     console.log(id_Etudiant);
@@ -88,7 +92,7 @@ export default class Etudiant extends Component {
   render() {
     const etudiant = Array.isArray(this.state.listFilter) && this.state.listFilter.map((etudiant) => {
       return (
-        <tr key={etudiant.id_Etudiant} className="even:bg-gray-50">
+        <tr key={etudiant.id_Etudiant} className="even:bg-gray-50 cursor-pointer" onClick={() => this.onRowClick(etudiant.id_Etudiant)}>
           <td className="px-4 py-3">{etudiant.last_name}</td>
           <td className="px-4 py-3">{etudiant.first_name}</td>
           <td className="px-4 py-3">{etudiant.email}</td>
